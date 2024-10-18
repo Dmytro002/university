@@ -1,0 +1,21 @@
+{
+  "name": "Computer Science",
+  "head_of_department": null,
+  "lectors": [
+    {
+      "name": "Head Lector",
+      "salary": 90000,
+      "degree": "PROFESSOR"
+    },
+    {
+      "name": "Lector One",
+      "salary": 50000,
+      "degree": "ASSISTANT"
+    },
+    {
+      "name": "Lector Two",
+      "salary": 60000,
+      "degree": "ASSOCIATE_PROFESSOR"
+    }
+  ]
+}

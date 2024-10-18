@@ -1,14 +1,18 @@
-package domain.model;
+package com.example.university.domain.model;
 
-import domain.model.base.AbstractIdentifiable;
+import com.example.university.domain.model.base.AbstractIdentifiable;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "departments")
 public class Department extends AbstractIdentifiable {
@@ -20,7 +24,7 @@ public class Department extends AbstractIdentifiable {
     @JoinColumn(name = "head_of_department_id")
     private Lector headOfDepartment;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "lector_department",
             joinColumns = @JoinColumn(name = "department_id"),

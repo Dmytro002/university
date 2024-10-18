@@ -4,98 +4,135 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
 
-    <changeSet id="30-04-2024-001" author="Nataliia Hrabets">
+    <changeSet id="17-10-2024-001" author="Dmytro Svirniuk">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="instructors"/>
+                <tableExists tableName="lectors"/>
             </not>
         </preConditions>
 
-        <createTable tableName="instructors">
-            <column name="id" type="bigint" autoIncrement="true">
+        <createTable tableName="lectors">
+            <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="first_name" type="varchar(255)">
+            <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_name" type="varchar(255)">
+            <column name="salary" type="double">
                 <constraints nullable="false"/>
             </column>
-            <column name="email" type="varchar(255)">
+            <column name="degree" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
 
-    <changeSet id="30-04-2024-002" author="Nataliia Hrabets">
+    <changeSet id="17-10-2024-002" author="Dmytro Svirniuk">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="courses"/>
+                <tableExists tableName="departments"/>
             </not>
         </preConditions>
 
-        <createTable tableName="courses">
+        <createTable tableName="departments">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="code" type="varchar(10)">
+            <column name="head_of_department_id" type="bigint"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="fk_departments_head_of_department"
+                baseTableName="departments"
+                baseColumnNames="head_of_department_id"
+                referencedTableName="lectors"
+                referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="17-10-2024-003" author="Dmytro Svirniuk">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="lector_department"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="lector_department">
+            <column name="department_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" type="varchar(1024)">
-                <constraints nullable="true"/>
-            </column>
-            <column name="credits" type="int">
-                <constraints nullable="false"/>
-            </column>
-            <column name="departments" type="varchar(1024)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="instructor_id" type="bigint">
+            <column name="lector_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <addForeignKeyConstraint constraintName="fk_courses_instructors"
-                                 baseTableName="courses"
-                                 baseColumnNames="instructor_id"
-                                 referencedTableName="instructors"
-                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint
+                constraintName="fk_lector_department_department"
+                baseTableName="lector_department"
+                baseColumnNames="department_id"
+                referencedTableName="departments"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                constraintName="fk_lector_department_lector"
+                baseTableName="lector_department"
+                baseColumnNames="lector_id"
+                referencedTableName="lectors"
+                referencedColumnNames="id"/>
     </changeSet>
 
-    <changeSet id="30-04-2024-003" author="Nataliia Hrabets">
-        <createIndex indexName="idx_courses_credits" tableName="courses">
-            <column name="credits"/>
-        </createIndex>
-        <createIndex indexName="idx_courses_departments" tableName="courses">
-            <column name="departments"/>
-        </createIndex>
-        <createIndex indexName="idx_courses_instructor_id" tableName="courses">
-            <column name="instructor_id"/>
-        </createIndex>
-    </changeSet>
-
-    <changeSet id="30-04-2024-004" author="Nataliia Hrabets">
-        <comment>Populate the instructors table with initial dat</comment>
-        <insert tableName="instructors">
+    <changeSet id="17-10-2024-004" author="Dmytro Svirniuk">
+        <insert tableName="lectors">
             <column name="id" valueNumeric="1"/>
-            <column name="first_name" value="John"/>
-            <column name="last_name" value="Doe"/>
-            <column name="email" value="john.doe@example.com"/>
+            <column name="name" value="John Doe"/>
+            <column name="salary" valueNumeric="50000"/>
+            <column name="degree" value="ASSISTANT"/>
         </insert>
-        <insert tableName="instructors">
+        <insert tableName="lectors">
             <column name="id" valueNumeric="2"/>
-            <column name="first_name" value="Jane"/>
-            <column name="last_name" value="Smith"/>
-            <column name="email" value="jane.smith@example.com"/>
+            <column name="name" value="Jane Smith"/>
+            <column name="salary" valueNumeric="55000"/>
+            <column name="degree" value="ASSOCIATE_PROFESSOR"/>
         </insert>
-        <insert tableName="instructors">
+        <insert tableName="lectors">
             <column name="id" valueNumeric="3"/>
-            <column name="first_name" value="Man"/>
-            <column name="last_name" value="Stev"/>
-            <column name="email" value="man.stev@example.com"/>
+            <column name="name" value="Emily Johnson"/>
+            <column name="salary" valueNumeric="60000"/>
+            <column name="degree" value="PROFESSOR"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="17-10-2024-005" author="Dmytro Svirniuk">
+        <insert tableName="departments">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="Computer Science"/>
+            <column name="head_of_department_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="departments">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="Mathematics"/>
+            <column name="head_of_department_id" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="17-10-2024-006" author="Dmytro Svirniuk">
+        <insert tableName="lector_department">
+            <column name="department_id" valueNumeric="1"/>
+            <column name="lector_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="lector_department">
+            <column name="department_id" valueNumeric="1"/>
+            <column name="lector_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="lector_department">
+            <column name="department_id" valueNumeric="2"/>
+            <column name="lector_id" valueNumeric="2"/>
+        </insert>
+        <insert tableName="lector_department">
+            <column name="department_id" valueNumeric="2"/>
+            <column name="lector_id" valueNumeric="3"/>
         </insert>
     </changeSet>
 

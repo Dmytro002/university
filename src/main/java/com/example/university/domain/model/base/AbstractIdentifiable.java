@@ -1,4 +1,4 @@
-package domain.model.base;
+package com.example.university.domain.model.base;
 
 import jakarta.persistence.*;
 import lombok.Getter;

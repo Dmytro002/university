@@ -1,15 +1,17 @@
-package domain.model;
+package com.example.university.domain.model;
 
-import domain.constant.Degree;
-import domain.model.base.AbstractIdentifiable;
+import com.example.university.domain.constant.Degree;
+import com.example.university.domain.model.base.AbstractIdentifiable;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Set;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "lectors")
 public class Lector extends AbstractIdentifiable {
